@@ -23,12 +23,37 @@ async function fetchUserData() {
            <td>${el.mobile}</td>
            <td>${el.city}</td>
            <td>
+             <button type="button" class="btn btn-primary" onclick="deleteUser(${el.id})">Delete</button>
              <button class="btn btn-primary">Edit</button>
-             <button class="btn btn-primary">Delete</button>
          </td>`;
   });
 
   tableBody.innerHTML = htmlStr;
+}
+// delete user
+
+async function deleteUser(id) {
+  
+   const userId = id;
+
+   const data = {
+    id : userId
+   }
+
+   const response = await fetch('http://localhost:3000/deleteUserCode.php', {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(data),
+  });
+
+  const responseData = await response.json();
+    
+  if (responseData.status == true) {
+    fetchUserData();
+  }
+
 }
 
 // Document onload
